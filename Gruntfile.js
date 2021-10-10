@@ -61,9 +61,11 @@ module.exports = (grunt) => {
 
     grunt.initConfig(gruntConfig);
 
+    // grunt.registerTask('default', ['clean', 'sass']);
     grunt.registerTask('default', ['clean', 'sass']);
 
     if (!development) {
-        grunt.registerTask('default', ['sass', 'concat', 'uglify', 'obfuscator', 'clean']);
+        // grunt.registerTask('default', ['sass', 'concat', 'uglify', 'obfuscator', 'clean']);
+        grunt.registerTask('default', ['sass', 'concat', 'uglify', 'obfuscator']);
     }
 };
