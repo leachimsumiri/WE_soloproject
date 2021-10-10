@@ -1,5 +1,34 @@
-$body-color: red;
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 body {
-  color: $body-color;
+  padding: 1rem;
+
+  table {
+    margin-top: 1rem;
+
+    thead {
+      font-weight: bold;
+    }
+
+    tr {
+      padding: 5px;
+
+       td > div {
+          display: flex;
+          justify-content: space-between;
+
+          button {
+            font-size: 10px !important;
+
+            &.btn-primary {
+              background-color: #0d6efd !important;
+            }
+          }
+        }
+    }
+  }
+
+  form {
+    margin-top: 1rem;
+  }
 }

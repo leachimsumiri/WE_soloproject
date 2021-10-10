@@ -2,19 +2,23 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const pages = ['index', 'characters', 'locations', 'episodes', 'contact'];
+
 module.exports = {
     mode: 'development',
-    // 1
-    // Use the src/index.js file as entry point to bundle it.
-    // If the src/index.js file imports other JS files,
-    // bundle them as well
-    entry: path.resolve(__dirname, './src/index.js'),
-    // 2
-    // The bundles source code files shall result in a bundle.js file
-    // in the /dist folder
+    entry: pages.reduce((config, page) => {
+        // eslint-disable-next-line no-param-reassign
+        config[page] = `./src/js/${page}.js`;
+        return config;
+    }, {}),
     output: {
-        path: path.resolve(__dirname, './dist'),
-        filename: 'bundle.js',
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
     },
     // 3
     // The /dist folder will be used to serve our application
@@ -22,15 +26,17 @@ module.exports = {
     devServer: {
         static: path.resolve(__dirname, './dist'),
     },
-    // 4
-    // Add plugins for webpack here
-    plugins: [
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'Basic Webpack Setup',
-            template: path.resolve(__dirname, './src/index.html'),
-        }),
-    ],
+    plugins: [new CleanWebpackPlugin()].concat(
+        pages.map(
+            (page) => new HtmlWebpackPlugin({
+                title: 'Rick and Morty Api Representation',
+                inject: true,
+                template: `./src/html/${page}.html`,
+                filename: `${page}.html`,
+                chunks: [page],
+            }),
+        ),
+    ),
     // 5
     // Integrate Babel in the build process
     // Define which files to use the loader
